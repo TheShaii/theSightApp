@@ -12,8 +12,74 @@ var DV = globalThis.DV || (globalThis.DV = {});
     return "Something went wrong reading this file: " + m;
   }
 
+  // Decorative "sightlines": faint line-chart traces drifting sideways behind the landing page.
+  // Each trace is a seeded random walk drawn twice side by side, so translating by half loops seamlessly.
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const TRACES = [
+    { y: 62, amp: 9, secs: 70 }, { y: 70, amp: 7, secs: 95 }, { y: 54, amp: 12, secs: 55, gold: true },
+    { y: 80, amp: 6, secs: 120 }, { y: 45, amp: 8, secs: 85 },
+  ];
+  function sightlines() {
+    let seed = 7;
+    const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const layer = h("div", { class: "landing-fx", "aria-hidden": "true" });
+    for (const t of TRACES) {
+      const pts = [];
+      let v = t.y;
+      for (let x = 0; x <= 1000; x += 40) {
+        v = Math.max(t.y - 14, Math.min(t.y + 14, v + (rand() - 0.5) * t.amp));
+        pts.push([x, v]);
+      }
+      pts[pts.length - 1][1] = pts[0][1];
+      const run = (dx) => pts.map(([x, y]) => `${x + dx} ${y.toFixed(1)}`).join(" L");
+      const svg = document.createElementNS(SVG_NS, "svg");
+      svg.setAttribute("viewBox", "0 0 2000 100");
+      svg.setAttribute("preserveAspectRatio", "none");
+      svg.style.setProperty("--drift", t.secs + "s");
+      const path = document.createElementNS(SVG_NS, "path");
+      path.setAttribute("d", `M${run(0)} L${run(1000)}`);
+      if (t.gold) path.setAttribute("class", "gold");
+      svg.appendChild(path);
+      layer.appendChild(svg);
+    }
+    return layer;
+  }
+
+  // Landing color mode (light / dark / system). Remembered when storage works; never required.
+  const MODE_KEY = "thesight:landingMode";
+  const MODE_BUTTONS = [["light", "sun", "Light"], ["dark", "moon", "Dark"], ["system", "monitor", "System"]];
+  function landingMode() {
+    let saved = null;
+    try { saved = globalThis.localStorage ? localStorage.getItem(MODE_KEY) : null; } catch (e) { /* storage blocked: use the default */ }
+    return DV.designs.LANDING_MODES.includes(saved) ? saved : "system";
+  }
+  function saveLandingMode(mode) {
+    try { if (globalThis.localStorage) localStorage.setItem(MODE_KEY, mode); } catch (e) { /* storage blocked: choice lasts this visit */ }
+  }
+  function modeSwitch() {
+    const group = h("div", { class: "seg landing-mode", role: "group", "aria-label": "Color mode" });
+    for (const [mode, iconName, label] of MODE_BUTTONS) {
+      group.appendChild(h("button", { type: "button", "data-mode-btn": mode, "aria-pressed": String(landingMode() === mode),
+        onclick: () => {
+          saveLandingMode(mode);
+          DV.designs.applyLanding(mode);
+          group.querySelectorAll("[data-mode-btn]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.modeBtn === mode)));
+        } }, icon(iconName), label));
+    }
+    return group;
+  }
+  // In "system" mode, follow the OS live while the landing page is showing.
+  if (globalThis.matchMedia) {
+    const mq = globalThis.matchMedia("(prefers-color-scheme: dark)");
+    const follow = () => { if (document.querySelector(".landing-mode") && landingMode() === "system") DV.designs.applyLanding("system"); };
+    if (mq.addEventListener) mq.addEventListener("change", follow);
+  }
+
   function landing(root, error) {
+    DV.designs.applyLanding(landingMode());
     clear(root);
+    root.appendChild(sightlines());
+    root.appendChild(modeSwitch());
     const input = h("input", { type: "file", accept: ACCEPT, class: "sr-only", id: "file-input", onchange: (e) => e.target.files[0] && readFile(e.target.files[0]) });
     const zone = h("div", { class: "dropzone", role: "button", tabindex: 0, "aria-label": "Choose an Excel file, or drop one here",
       onclick: () => input.click(), onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } } },

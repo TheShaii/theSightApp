@@ -14,7 +14,7 @@
   --series-1: #435bcf; --series-2: #d16022; --series-3: #009267; --series-4: #9846ab;
   --series-5: #ab8704; --series-6: #bd2c49; --series-7: #0084a8; --series-8: #5f983a;
   --over: #bd2c49; --under: #435bcf; --neutral: #dfe5ee; --other: #a3abbf;
-  --kpi-stripe: var(--brand-yellow);
+  --kpi-stripe: var(--brand-gold);
 }
 [data-variant="bento-dark"] {
   --bg: #121725; --surface: #1b2030; --surface-solid: #1b2030; --surface-2: #20263a; --surface-3: #283048;
@@ -27,7 +27,7 @@
   --series-1: #6985e7; --series-2: #1ea381; --series-3: #d8714c; --series-4: #3a99ba;
   --series-5: #d35570; --series-6: #b68b16; --series-7: #ad65be; --series-8: #6ea44e;
   --over: #d35570; --under: #6985e7; --neutral: #283048; --other: #69728c;
-  --kpi-stripe: var(--brand-yellow);
+  --kpi-stripe: var(--brand-gold);
 }
 [data-design="bento"] .lay-exec .section, [data-design="bento"] .lay-boards .section { box-shadow: none; padding: 0; border: 0; }
 [data-design="bento"] .kpi .value { font-size: 32px; }

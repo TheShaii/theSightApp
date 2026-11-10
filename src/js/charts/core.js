@@ -72,7 +72,7 @@ var DV = globalThis.DV || (globalThis.DV = {});
 
   const isHl = (ctx, l) => !!ctx.highlight && DV.filters.memberKey(l) === ctx.highlight;
   const dimmed = (ctx, l) => !!ctx.highlight && !isHl(ctx, l);
-  // Cross-highlight: the selected member gets the brand-yellow ring, the rest fade.
+  // Cross-highlight: the selected member gets the brand-gold ring, the rest fade.
   function itemExtra(ctx, l) {
     if (isHl(ctx, l)) return { opacity: 1, borderColor: ctx.theme.highlight, borderWidth: 3 };
     return { opacity: dimmed(ctx, l) ? 0.28 : 1 };

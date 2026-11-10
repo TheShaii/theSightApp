@@ -63,5 +63,5 @@
   --over: #ff6b6b; --under: #4da3ff; --neutral: #808080; --other: #9e9e9e;
   --good-text: #7bff7b; --bad-text: #ff8a80; --warn-text: #ffd400;
 }
-[data-variant="classic-hc"] { --accent-text: #FACC15; --focus: #FACC15; }
+[data-variant="classic-hc"] { --accent-text: #E3C25A; --focus: #E3C25A; }
 [data-variant="classic-mono"] { --focus: #000000; --accent-text: #000000; }

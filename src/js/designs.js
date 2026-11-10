@@ -6,9 +6,9 @@ var DV = globalThis.DV || (globalThis.DV = {});
   "use strict";
 
   const DESIGNS = [
-    { id: "thesight", name: "TheSight", blurb: "Clean white and navy with yellow highlights.",
+    { id: "thesight", name: "TheSight", blurb: "Warm white and black with gold highlights.",
       chart: { bar: "solid", radius: 4, glow: 0, outline: false, smooth: false, area: false },
-      variants: [{ id: "thesight-light", name: "Light", mode: "light" }, { id: "thesight-dark", name: "Navy", mode: "dark" }] },
+      variants: [{ id: "thesight-light", name: "Light", mode: "light" }, { id: "thesight-dark", name: "Black", mode: "dark" }] },
     { id: "exec", name: "Executive", blurb: "Navy header band, white cards, KPI tiles with colored top edges.",
       chart: { bar: "solid", radius: 4, glow: 0, outline: false, smooth: false, area: false },
       variants: [{ id: "exec-light", name: "Light", mode: "light" }, { id: "exec-dark", name: "Navy", mode: "dark" }] },
@@ -79,5 +79,17 @@ var DV = globalThis.DV || (globalThis.DV = {});
     };
   }
 
-  DV.designs = { DESIGNS, VARIANTS, PALETTES, design, variant, migrate, apply, read };
+  // The landing page always wears the brand design, so the last design picked in a dashboard
+  // never leaks onto it. Its own mode switch picks light, dark, or "system" (follow the OS).
+  const LANDING_MODES = ["light", "dark", "system"];
+  function landingVariantId(mode, prefersDark) {
+    const dark = mode === "dark" || (mode !== "light" && prefersDark);
+    return dark ? "thesight-dark" : "thesight-light";
+  }
+  function applyLanding(mode) {
+    const prefersDark = !!(globalThis.matchMedia && globalThis.matchMedia("(prefers-color-scheme: dark)").matches);
+    apply({ variantId: landingVariantId(mode, prefersDark), paletteId: "default", density: "comfortable", corners: "rounded" });
+  }
+
+  DV.designs = { DESIGNS, VARIANTS, PALETTES, design, variant, migrate, apply, read, LANDING_MODES, landingVariantId, applyLanding };
 })();

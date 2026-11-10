@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="TheSight2.0 logo">
+  <rect width="64" height="64" rx="14" fill="#0D0C0A"/>
+  <path d="M9 32C17.6 17.4 25.6 12.4 32 12.4S46.4 17.4 55 32C46.4 46.6 38.4 51.6 32 51.6S17.6 46.6 9 32Z" fill="none" stroke="#C9A227" stroke-width="3.6" stroke-linejoin="round"/>
+  <circle cx="32" cy="32" r="10.4" fill="#C9A227"/>
+  <path d="M25.8 36.2l4-4.4 3.3 2.6 5.2-6.3" fill="none" stroke="#0D0C0A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
