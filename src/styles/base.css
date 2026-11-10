@@ -41,6 +41,11 @@ svg.icon { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-w
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-right: 8px; font-size: 16px; letter-spacing: .01em; color: var(--brand-white); }
 .brand img { width: 30px; height: 30px; border-radius: 7px; display: block; }
+/* The logo gives a playful turn on hover, as in theVault (springy ease overshoots, then settles). */
+@media (prefers-reduced-motion: no-preference) {
+  .brand img { transition: transform .5s cubic-bezier(.3, 1.5, .5, 1); }
+  .brand:hover img { transform: rotate(24deg); }
+}
 .brand .ver { color: var(--brand-gold); }
 .topbar .spacer { flex: 1; }
 .topbar .btn { background: transparent; border-color: var(--brand-line); color: var(--brand-white); }
