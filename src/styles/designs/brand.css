@@ -1,24 +1,25 @@
 /* TheSight2.0 brand tokens + shared mode defaults. Every design file builds on these.
-   Brand rule: yellow marks highlights (active tab, primary buttons, progress, drag guides,
-   selection) and is never text on white. Accent-colored text uses --accent-text. */
+   Brand rule: gold marks highlights (active tab, primary buttons, progress, drag guides,
+   selection) and is never text on a light surface. Accent-colored text uses --accent-text
+   (dark gold on light, gold on dark). */
 :root {
-  --brand-navy: #0B1220; --brand-yellow: #FACC15; --brand-white: #FFFFFF;
-  --brand-muted: #c3cadb; --brand-line: rgba(255, 255, 255, 0.18); --brand-line-strong: rgba(255, 255, 255, 0.4);
+  --brand-black: #0D0C0A; --brand-gold: #C9A227; --brand-white: #FFFFFF;
+  --brand-muted: #BDB6A6; --brand-line: rgba(255, 255, 255, 0.18); --brand-line-strong: rgba(255, 255, 255, 0.4);
   --brand-hover: rgba(255, 255, 255, 0.08);
-  --accent: #FACC15; --accent-ink: #0B1220;
-  --highlight: #FACC15;
+  --accent: #C9A227; --accent-ink: #0D0C0A;
+  --highlight: #C9A227;
 }
 
 [data-mode="light"] {
-  --accent-soft: rgba(250, 204, 21, 0.22); --accent-text: #0B1220; --focus: #0B1220;
+  --accent-soft: rgba(201, 162, 39, 0.20); --accent-text: #7A5A00; --focus: #7A5A00;
   --good-text: #106b2f; --bad-text: #b42318; --warn-text: #8a5300;
-  --good: #16a34a; --warning: #FACC15; --critical: #dc2626;
-  --overlay: rgba(11, 18, 32, 0.5); --shadow-pop: 0 12px 40px rgba(11, 18, 32, 0.25);
+  --good: #16a34a; --warning: #C9A227; --critical: #dc2626;
+  --overlay: rgba(13, 12, 10, 0.5); --shadow-pop: 0 12px 40px rgba(13, 12, 10, 0.22);
 }
 [data-mode="dark"] {
-  --accent-soft: rgba(250, 204, 21, 0.16); --accent-text: #FACC15; --focus: #FACC15;
-  --good-text: #4ade80; --bad-text: #ff8a80; --warn-text: #FACC15;
-  --good: #22c55e; --warning: #FACC15; --critical: #f87171;
+  --accent-soft: rgba(201, 162, 39, 0.16); --accent-text: #E3C25A; --focus: #E3C25A;
+  --good-text: #4ade80; --bad-text: #ff8a80; --warn-text: #E3C25A;
+  --good: #22c55e; --warning: #C9A227; --critical: #f87171;
   --overlay: rgba(0, 0, 0, 0.62); --shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.6);
 }
 

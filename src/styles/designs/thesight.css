@@ -1,25 +1,60 @@
-/* Design: TheSight (brand default). White + navy, yellow highlights. */
+/* Design: TheSight (brand default). Warm white / black with gold highlights, after the chosen
+   "Option A" mockup (docs/design-options/option-a.html): restrained, hairline panels, no
+   shadows or hover lift, KPIs as one ruled ledger row, tabular numerals. Gold stays for
+   action and selection only. Series palettes validated with the dataviz validate_palette.js
+   (light on #FFFFFF, dark on #161511); slots 3 and 5 sit below 3:1 on light, covered by the
+   legend + data-table relief rule (CLAUDE.md §2.7). */
+[data-design="thesight"] {
+  --radius: 12px; --radius-sm: 6px; --head-weight: 600; --kpi-weight: 600;
+  /* A zero shadow, not "none": --shadow is also used inside shadow lists (e.g. the landing logo ring). */
+  --hover-lift: none; --shadow: 0 0 #0000;
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
 [data-variant="thesight-light"] {
-  --bg: #F4F6FA; --surface: #FFFFFF; --surface-solid: #FFFFFF; --surface-2: #F7F8FB; --surface-3: #ECEFF5;
-  --text: #0B1220; --text-2: #3b4458; --muted: #59637a;
-  --border: rgba(11, 18, 32, 0.10); --border-strong: rgba(11, 18, 32, 0.26);
-  --grid: #e6e9f0; --axis: #b8bfcc;
-  --shadow: 0 1px 2px rgba(11, 18, 32, 0.05), 0 6px 20px rgba(11, 18, 32, 0.06);
-  --tooltip-bg: #0B1220; --tooltip-text: #FFFFFF;
-  --series-1: #1853c6; --series-2: #d55c13; --series-3: #00935d; --series-4: #7b47bf;
-  --series-5: #c92f33; --series-6: #008aa3; --series-7: #b88000; --series-8: #c34189;
-  --over: #c92f33; --under: #1853c6; --neutral: #dde1ea; --other: #9aa3b5;
-  --kpi-stripe: var(--brand-yellow); --section-bg: #FFFFFF;
+  --bg: #F7F6F2; --surface: #FFFFFF; --surface-solid: #FFFFFF; --surface-2: #EFEDE6; --surface-3: #E6E2D7;
+  --text: #17150F; --text-2: #3B372E; --muted: #5E594E;
+  --border: #E2DED3; --border-strong: #CFC9BA; --card-border: #E2DED3;
+  --grid: #ECE8DD; --axis: #CFC9BA;
+  --tooltip-bg: #0D0C0A; --tooltip-text: #F2EEE3;
+  --series-1: #256abf; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #a26b2f;
+  --series-5: #e87ba4; --series-6: #008300; --series-7: #6250d6; --series-8: #e34948;
+  --over: #B42318; --under: #0E7C66; --neutral: #E6E2D7; --other: #A39C8D;
+  --kpi-stripe: transparent; --section-bg: transparent;
 }
 [data-variant="thesight-dark"] {
-  --bg: #0B1220; --surface: #121B2E; --surface-solid: #121B2E; --surface-2: #17223A; --surface-3: #1F2B47;
-  --text: #FFFFFF; --text-2: #c9d1e3; --muted: #9aa6bf;
-  --border: rgba(255, 255, 255, 0.09); --border-strong: rgba(255, 255, 255, 0.24);
-  --grid: #1f2a44; --axis: #36446a;
-  --shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-  --tooltip-bg: #1F2B47; --tooltip-text: #FFFFFF;
-  --series-1: #4a81eb; --series-2: #d8662a; --series-3: #019f68; --series-4: #9163d5;
-  --series-5: #d74745; --series-6: #139cb6; --series-7: #b98a00; --series-8: #cd5394;
-  --over: #d74745; --under: #4a81eb; --neutral: #2a3654; --other: #5d6a88;
-  --kpi-stripe: var(--brand-yellow); --section-bg: #0F1729;
+  --bg: #0E0D0B; --surface: #161511; --surface-solid: #161511; --surface-2: #121110; --surface-3: #211F1A;
+  --text: #F2EEE3; --text-2: #D6D0C2; --muted: #A59E90;
+  --border: #2A2722; --border-strong: #3A362F; --card-border: #2A2722;
+  --grid: #24211C; --axis: #3F3A31;
+  --tooltip-bg: #2A2722; --tooltip-text: #F2EEE3;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #bd7430;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9; --series-8: #e66767;
+  --over: #F97066; --under: #3DCCA2; --neutral: #2A2722; --other: #6E685C;
+  --kpi-stripe: transparent; --section-bg: transparent;
 }
+
+[data-design="thesight"] body { font-variant-numeric: tabular-nums; }
+[data-design="thesight"] ::selection { background: var(--brand-gold); color: var(--brand-black); }
+
+/* KPI ledger: one bordered row, cells split by hairlines (box-shadow keeps the rules right when cells wrap). */
+[data-design="thesight"] .kpis { gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+[data-design="thesight"] .kpi { border: 0; border-radius: 0; background: transparent; box-shadow: 1px 0 0 var(--border), 0 1px 0 var(--border); padding: 16px 20px; }
+[data-design="thesight"] .kpi:hover { background: var(--bg); }
+[data-design="thesight"] .kpi[aria-pressed="true"] { box-shadow: 1px 0 0 var(--border), 0 1px 0 var(--border), inset 0 -2px 0 var(--accent); }
+[data-design="thesight"] .kpi .label { color: var(--muted); font-weight: 500; }
+[data-design="thesight"] .kpi .value { font-size: 24px; }
+[data-design="thesight"] .headline { font-size: 16px; color: var(--text); }
+
+/* Sections sit on the page, split by a hairline under their heading; panels carry the content. */
+[data-design="thesight"] .sections .section { background: transparent; border: 0; border-radius: 0; padding: 0; }
+[data-design="thesight"] .section-head { padding-bottom: 10px; margin-bottom: var(--gap); border-bottom: 1px solid var(--border); }
+[data-design="thesight"] .section-head h2 { font-size: 18px; }
+[data-design="thesight"] .card { box-shadow: none; }
+[data-design="thesight"] .card:hover { border-color: var(--border-strong); }
+
+/* Filter rail: a second neutral layer. */
+[data-design="thesight"] .sidebar .filterbar { background: var(--surface-2); box-shadow: none; }
+
+/* Ledger tables: quiet header, pinned Grand Total on the warm layer. */
+[data-design="thesight"] table.data thead th { color: var(--muted); font-size: 12px; }
+[data-design="thesight"] table.data tfoot td { background: var(--surface-2); }

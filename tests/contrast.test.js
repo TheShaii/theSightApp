@@ -1,6 +1,6 @@
 "use strict";
 // WCAG AA for every design variant × palette (CLAUDE.md §2.7) plus the brand rules:
-// navy top bar with white text, navy text on yellow, and yellow never used as text color.
+// black top bar with white text, black text on gold, and gold never used as text color.
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
@@ -72,21 +72,21 @@ for (const v of VARIANTS) {
   }
 }
 
-test("brand: navy top bar, white text, navy-on-yellow highlights", () => {
+test("brand: black top bar, white text, black-on-gold highlights", () => {
   const c = resolve(VARIANTS[0], "default");
-  assert.equal(c["--brand-navy"].toUpperCase(), "#0B1220");
-  assert.equal(c["--brand-yellow"].toUpperCase(), "#FACC15");
-  assert.ok(ratio(c["--brand-white"], c["--brand-navy"]) >= 4.5, "white on navy");
-  assert.ok(ratio(c["--brand-muted"], c["--brand-navy"]) >= 4.5, "muted on navy");
-  assert.ok(ratio(c["--accent-ink"], c["--accent"]) >= 4.5, "navy on yellow");
-  assert.ok(ratio(c["--brand-yellow"], c["--brand-navy"]) >= 4.5, "yellow on navy");
+  assert.equal(c["--brand-black"].toUpperCase(), "#0D0C0A");
+  assert.equal(c["--brand-gold"].toUpperCase(), "#C9A227");
+  assert.ok(ratio(c["--brand-white"], c["--brand-black"]) >= 4.5, "white on black");
+  assert.ok(ratio(c["--brand-muted"], c["--brand-black"]) >= 4.5, "muted on black");
+  assert.ok(ratio(c["--accent-ink"], c["--accent"]) >= 4.5, "black on gold");
+  assert.ok(ratio(c["--brand-gold"], c["--brand-black"]) >= 4.5, "gold on black");
 });
 
-test("brand: yellow is never used as text color (except on the navy bars)", () => {
+test("brand: gold is never used as text color (except on the black bars)", () => {
   const rules = [...rawCss.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^}]*)\}/g)];
-  const onNavy = /\.topbar|\.brand|\.g-footer/;
+  const onBlack = /\.topbar|\.brand|\.g-footer/;
   const offenders = rules
-    .filter(([, sel, body]) => /(^|[\s;])color\s*:\s*var\(--(accent|brand-yellow|highlight)\)/.test(body) && !onNavy.test(sel))
+    .filter(([, sel, body]) => /(^|[\s;])color\s*:\s*var\(--(accent|brand-gold|highlight)\)/.test(body) && !onBlack.test(sel))
     .map(([, sel]) => sel.trim());
   assert.deepEqual(offenders, []);
 });

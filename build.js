@@ -7,7 +7,7 @@ const ROOT = __dirname;
 const r = (...p) => fs.readFileSync(path.join(ROOT, ...p), "utf8");
 const ORDER = JSON.parse(r("src", "order.json"));
 const OUT = path.join(ROOT, "dist", "TheSight2.0.html");
-const LOGO = path.join(ROOT, "docs", "logo.png");
+const LOGO = path.join(ROOT, "docs", "logo.svg");
 const CSS_FILES = ["base.css", "designs/brand.css", "designs/thesight.css", "designs/executive.css", "designs/bank.css", "designs/estate.css", "designs/plum.css", "designs/neon.css", "designs/bento.css", "designs/brutal.css", "designs/classic.css", "layouts.css"];
 const ALLOWED_URLS = ["http://www.w3.org/2000/svg"]; // SVG namespace string, not a request
 
@@ -19,7 +19,7 @@ function build() {
   const vendor = ["xlsx.full.min.js", "echarts.min.js"].map((f) => `/* vendor/${f} */\n` + r("vendor", f)).join("\n;\n");
   const files = ORDER.pure.concat(ORDER.ui);
   const app = files.map((f) => `/* src/js/${f} */\n` + r("src", "js", f)).join("\n");
-  const logo = "data:image/png;base64," + fs.readFileSync(LOGO).toString("base64");
+  const logo = "data:image/svg+xml;base64," + fs.readFileSync(LOGO).toString("base64");
 
   // Function replacers: vendor code contains "$&"-style sequences that string replace would expand.
   const html = r("src", "index.template.html")

@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TheSight2.0 · Option A (impeccable)</title>
+<style>
+:root {
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --gold: #C9A227;
+  --on-gold: #14120D;
+  --black: #0D0C0A;
+  --t-xs: .8125rem; --t-sm: .875rem; --t-md: 1rem; --t-lg: 1.125rem; --t-xl: 1.375rem; --t-2xl: 1.75rem;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+:root[data-theme="light"] {
+  --bg: #F7F6F2; --surface: #FFFFFF; --rail: #EFEDE6; --ink: #17150F; --ink-2: #3B372E; --muted: #5E594E;
+  --line: #E2DED3; --line-strong: #CFC9BA; --track: #ECE8DD; --plan: #D6D0C0;
+  --bar: #3B372E; --accent-text: #7A5A00; --hl-bg: #FBF3D9;
+  --over: #B42318; --under: #0E7C66; --focus: #8A6A00;
+}
+:root[data-theme="dark"] {
+  --bg: #0E0D0B; --surface: #161511; --rail: #121110; --ink: #F2EEE3; --ink-2: #D6D0C2; --muted: #A59E90;
+  --line: #2A2722; --line-strong: #3A362F; --track: #211F1A; --plan: #4A453B;
+  --bar: #CFC8B8; --accent-text: #E3C25A; --hl-bg: #2B2510;
+  --over: #F97066; --under: #3DCCA2; --focus: #E3C25A;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font: 400 var(--t-md)/1.5 var(--font); color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+::selection { background: var(--gold); color: var(--on-gold); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+* { scrollbar-color: var(--line-strong) transparent; }
+button { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+
+/* Top bar: always black with a gold line (brand rule). */
+.topbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s5); height: 56px; padding: 0 var(--s5); background: var(--black); color: #F2EEE3; border-bottom: 2px solid var(--gold); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.brand svg { width: 28px; height: 28px; }
+.brand b { color: var(--gold); font-weight: 600; }
+.tabs { display: flex; gap: var(--s1); height: 100%; }
+.tabs a { display: flex; align-items: center; padding: 0 var(--s3); color: #BDB6A6; text-decoration: none; font-size: var(--t-sm); font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color .15s; }
+.tabs a:hover { color: #F2EEE3; }
+.tabs a[aria-current="page"] { color: #F2EEE3; border-bottom-color: #F2EEE3; }
+.file { margin-left: auto; font-size: var(--t-xs); color: #A59E90; display: flex; align-items: center; gap: var(--s2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file svg { flex: none; }
+.top-actions { display: flex; gap: var(--s2); }
+.btn { display: inline-flex; align-items: center; gap: var(--s2); min-height: 36px; padding: 0 var(--s4); border-radius: var(--r-sm); border: 1px solid transparent; font-size: var(--t-sm); font-weight: 500; cursor: pointer; transition: background .15s, border-color .15s, transform .15s var(--ease); }
+.btn:active { transform: translateY(1px); }
+.btn--ghost-dark { background: transparent; border-color: #3A362F; color: #E8E2D4; }
+.btn--ghost-dark:hover { background: #1E1C17; border-color: #4D483F; }
+.btn--primary { background: var(--gold); color: var(--on-gold); }
+.btn--primary:hover { background: #D8B23A; }
+.icon-btn { width: 36px; padding: 0; justify-content: center; }
+
+/* Shell: filter rail + content. */
+.shell { display: grid; grid-template-columns: 264px minmax(0, 1fr); min-height: calc(100vh - 56px); }
+.rail { background: var(--rail); border-right: 1px solid var(--line); padding: var(--s5) var(--s4); display: flex; flex-direction: column; gap: var(--s5); }
+.rail h2 { font-size: var(--t-sm); font-weight: 600; color: var(--ink); }
+.field { display: flex; flex-direction: column; gap: var(--s2); }
+.field > label, .field > .label { font-size: var(--t-xs); font-weight: 500; color: var(--muted); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 2px; }
+.seg button { border: 0; background: transparent; border-radius: 4px; min-height: 32px; font-size: var(--t-xs); font-weight: 500; color: var(--ink-2); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.search { display: flex; align-items: center; gap: var(--s2); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 0 var(--s3); min-height: 36px; }
+.search input { border: 0; outline: 0; background: transparent; font: inherit; font-size: var(--t-sm); color: var(--ink); width: 100%; }
+.search:focus-within { border-color: var(--focus); }
+.checks { display: flex; flex-direction: column; max-height: 232px; overflow: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); }
+.checks label { display: flex; align-items: center; gap: var(--s2); padding: 7px var(--s3); font-size: var(--t-sm); cursor: pointer; border-bottom: 1px solid var(--line); }
+.checks label:last-child { border-bottom: 0; }
+.checks label:hover { background: var(--bg); }
+.checks input { accent-color: var(--ink); width: 16px; height: 16px; margin: 0; }
+.checks .amt { margin-left: auto; color: var(--muted); font-size: var(--t-xs); }
+.readout { font-size: var(--t-xs); color: var(--muted); }
+.switch { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); font-size: var(--t-sm); cursor: pointer; }
+.switch input { appearance: none; width: 34px; height: 20px; border-radius: 10px; background: var(--line-strong); position: relative; cursor: pointer; transition: background .15s; margin: 0; flex: none; }
+.switch input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); transition: transform .2s var(--ease); }
+.switch input:checked { background: var(--gold); }
+.switch input:checked::after { transform: translateX(14px); background: var(--on-gold); }
+.privacy { margin-top: auto; display: flex; gap: var(--s2); font-size: var(--t-xs); color: var(--muted); line-height: 1.4; }
+
+/* Content. */
+.content { padding: var(--s6) var(--s6) var(--s7); max-width: 1280px; width: 100%; }
+.page-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s4); margin-bottom: var(--s5); }
+.page-head h1 { font-size: var(--t-2xl); font-weight: 600; line-height: 1.2; }
+.page-head p { margin: var(--s1) 0 0; color: var(--muted); font-size: var(--t-sm); }
+.chips { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: var(--t-xs); font-weight: 500; color: var(--ink-2); }
+.chip--ok svg { color: var(--under); }
+
+/* Summary ledger: figures in one hairline-ruled row, the headline as a sentence. */
+.ledger { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); margin-bottom: var(--s6); }
+.ledger__headline { padding: var(--s4) var(--s5); border-bottom: 1px solid var(--line); font-size: var(--t-lg); font-weight: 500; }
+.ledger__headline strong { color: var(--over); font-weight: 600; }
+.ledger dl { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 0; }
+.ledger dl > div { padding: var(--s4) var(--s5); border-right: 1px solid var(--line); cursor: pointer; transition: background .15s; }
+.ledger dl > div:last-child { border-right: 0; }
+.ledger dl > div:hover { background: var(--bg); }
+.ledger dl > div[aria-pressed="true"] { box-shadow: inset 0 -2px 0 var(--gold); }
+.ledger dt { font-size: var(--t-xs); font-weight: 500; color: var(--muted); }
+.ledger dd { margin: 2px 0 0; font-size: var(--t-xl); font-weight: 600; letter-spacing: -0.01em; }
+.ledger dd small { display: block; font-size: var(--t-xs); font-weight: 400; color: var(--muted); letter-spacing: 0; }
+
+/* Sections and panels. */
+.section { margin-bottom: var(--s7); }
+.section__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4); margin-bottom: var(--s4); padding-bottom: var(--s3); border-bottom: 1px solid var(--line); }
+.section__head h2 { font-size: var(--t-xl); font-weight: 600; }
+.section__head p { margin: 0; color: var(--muted); font-size: var(--t-sm); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s4); }
+.w7 { grid-column: span 7; } .w5 { grid-column: span 5; } .w6 { grid-column: span 6; } .w12 { grid-column: span 12; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s4) var(--s5) var(--s5); min-width: 0; }
+.panel__head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s4); }
+.panel__head h3 { font-size: var(--t-md); font-weight: 600; }
+.panel__head .legend { display: flex; gap: var(--s3); font-size: var(--t-xs); color: var(--muted); margin-top: 2px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.more { border: 0; background: transparent; width: 32px; height: 32px; border-radius: var(--r-sm); color: var(--muted); cursor: pointer; display: grid; place-items: center; flex: none; }
+.more:hover { background: var(--bg); color: var(--ink); }
+
+/* Charts. */
+.viz .row { display: grid; grid-template-columns: 132px minmax(0, 1fr) 56px 52px; align-items: center; gap: var(--s3); min-height: 28px; border-radius: 4px; cursor: pointer; padding: 0 4px; }
+.viz--ranked .row { grid-template-columns: 148px minmax(0, 1fr) 56px 40px; }
+.viz--diverging .row { grid-template-columns: 112px minmax(0, 1fr) 56px; }
+.viz .row:hover { background: var(--bg); }
+.row__label { font-size: var(--t-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row__value, .row__delta, .row__share { font-size: var(--t-xs); text-align: right; }
+.row__value { font-weight: 600; }
+.row__share { color: var(--muted); }
+.is-over { color: var(--over); } .is-under { color: var(--under); }
+.row__track { position: relative; height: 12px; background: var(--track); border-radius: 3px; }
+.row__track--zero { background: transparent; }
+.row__track--zero::before { content: ""; position: absolute; left: 50%; top: -6px; bottom: -6px; width: 1px; background: var(--line-strong); }
+.bar { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 3px; background: var(--bar); transition: background .15s; }
+.viz--bullet .bar--plan { background: var(--plan); }
+.viz--bullet .bar--actual { top: 3px; bottom: 3px; background: var(--bar); }
+.bar__marker { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--ink); }
+.viz--diverging .bar.is-over { background: var(--over); }
+.viz--diverging .bar.is-under { background: var(--under); }
+.viz--ranked .bar { background: var(--plan); }
+.viz--ranked .bar.is-lead { background: var(--bar); }
+.row.is-hl { background: var(--hl-bg); }
+.row.is-hl .bar, .row.is-hl .bar--actual { background: var(--gold) !important; }
+.row.is-hl .row__label { font-weight: 600; }
+.viz .row + .row { margin-top: 2px; }
+
+.viz--columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); height: 232px; padding-top: var(--s5); border-bottom: 1px solid var(--line-strong); }
+.col { display: flex; flex-direction: column; cursor: pointer; border-radius: 4px; }
+.col__bars { flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 6px; }
+.col__bar { position: relative; width: 34%; max-width: 44px; border-radius: 3px 3px 0 0; background: var(--plan); }
+.col__bar--actual { background: var(--bar); }
+.col__bar em { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-style: normal; font-size: var(--t-xs); color: var(--muted); white-space: nowrap; }
+.col__label { text-align: center; font-size: var(--t-sm); padding: var(--s2) 0; margin-bottom: -38px; }
+.col.is-hl .col__bar--actual { background: var(--gold); }
+.columns-pad { padding-bottom: 38px; }
+
+.table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: var(--r-md); }
+table.data { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.data th, .data td { padding: 9px var(--s3); text-align: left; white-space: nowrap; border-bottom: 1px solid var(--line); }
+.data thead th { position: sticky; top: 0; background: var(--rail); font-size: var(--t-xs); font-weight: 600; color: var(--muted); }
+.data tbody th { font-weight: 500; }
+.data .num { text-align: right; }
+.data tbody tr:hover { background: var(--bg); }
+.data tr.is-hl { background: var(--hl-bg); }
+.data tfoot th, .data tfoot td { font-weight: 600; border-top: 2px solid var(--line-strong); border-bottom: 0; background: var(--rail); }
+
+.tip { position: fixed; z-index: 20; pointer-events: none; max-width: 320px; padding: 8px 10px; border-radius: var(--r-sm); background: var(--black); color: #F2EEE3; font-size: var(--t-xs); line-height: 1.4; box-shadow: 0 6px 20px rgb(0 0 0 / .18); opacity: 0; transform: translateY(4px); transition: opacity .12s, transform .15s var(--ease); }
+.tip.is-on { opacity: 1; transform: none; }
+
+/* Responsive: structural, not fluid. */
+.filters-btn { display: none; }
+@media (max-width: 1100px) {
+  .w7, .w5, .w6 { grid-column: span 12; }
+  .ledger dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ledger dl > div:nth-child(3) { border-right: 0; }
+  .ledger dl > div:nth-child(-n+3) { border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { display: none; }
+  .rail.is-open { display: flex; position: fixed; inset: 56px 0 0 0; z-index: 4; overflow: auto; }
+  .filters-btn { display: inline-flex; }
+  .tabs, .file { display: none; }
+  .top-actions { margin-left: auto; }
+  .content { padding: var(--s5) var(--s4) var(--s7); }
+}
+@media (max-width: 560px) {
+  .topbar { padding: 0 var(--s4); gap: var(--s3); }
+  .btn--primary span { display: none; }
+  .ledger dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ledger dl > div { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .ledger dl > div:nth-child(2n) { border-right: 0; }
+  .ledger dl > div:nth-child(3) { border-right: 1px solid var(--line); }
+  .ledger dl > div:last-child { grid-column: span 2; border-bottom: 0; }
+  .viz .row { grid-template-columns: 96px minmax(0, 1fr) 48px; }
+  .viz .row .row__delta, .viz--ranked .row__share { display: none; }
+  .viz--diverging .row { grid-template-columns: 92px minmax(0, 1fr) 52px; }
+  .viz--diverging .row .row__delta { display: block; }
+  .panel { padding: var(--s4); }
+  .section__head { flex-direction: column; gap: var(--s1); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#C9A227" stroke-width="2.4"/><rect x="9.5" y="16" width="3.4" height="6" rx="1" fill="#C9A227"/><rect x="14.3" y="12.5" width="3.4" height="9.5" rx="1" fill="#C9A227"/><rect x="19.1" y="9" width="3.4" height="13" rx="1" fill="#C9A227"/></svg>
+    <span>TheSight<b>2.0</b></span>
+  </span>
+  <nav class="tabs" aria-label="Steps">
+    <a href="#" aria-current="page">Dashboard</a><a href="#">Pick charts</a><a href="#">Review structure</a>
+  </nav>
+  <span class="file" title="Loaded workbook">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+    <span data-file></span>
+  </span>
+  <div class="top-actions">
+    <button class="btn btn--ghost-dark filters-btn" type="button" data-filters-toggle aria-expanded="false">Filters</button>
+    <button class="btn btn--ghost-dark icon-btn" type="button" data-theme-toggle aria-label="Dark mode" aria-pressed="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <button class="btn btn--primary" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+      <span>Export dashboard</span>
+    </button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="rail" aria-label="Filters" data-rail>
+    <h2>Filters</h2>
+    <div class="field">
+      <span class="label" id="m-label">Measure</span>
+      <div class="seg" role="group" aria-labelledby="m-label">
+        <button type="button" aria-pressed="true">Actual</button><button type="button" aria-pressed="false">Budget</button><button type="button" aria-pressed="false">Paid</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="member-search">Campaigns</label>
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="member-search" type="search" placeholder="Search campaigns" autocomplete="off">
+      </div>
+      <div class="checks" data-checks></div>
+      <span class="readout" data-readout></span>
+    </div>
+    <label class="switch">Only over budget <input type="checkbox" data-over-only></label>
+    <p class="privacy">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:none;margin-top:1px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Your data stays on your computer. Nothing is uploaded.
+    </p>
+  </aside>
+
+  <main class="content" data-root>
+    <div class="page-head">
+      <div>
+        <h1 data-title></h1>
+        <p data-subtitle></p>
+      </div>
+      <div class="chips">
+        <span class="chip" title="From the workbook. Change it in Excel and re-open the file.">Fiscal Year: <span data-fy></span></span>
+        <span class="chip chip--ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Totals reconcile across 4 tables</span>
+        <span class="chip">4 tables detected · Review</span>
+      </div>
+    </div>
+
+    <section class="ledger" aria-label="Summary from Grand Totals">
+      <p class="ledger__headline" data-headline></p>
+      <dl data-kpis></dl>
+    </section>
+
+    <section class="section" aria-labelledby="s1">
+      <div class="section__head"><h2 id="s1">Budget and spend by campaign</h2><p data-insight-campaign></p></div>
+      <div class="grid">
+        <article class="panel w7">
+          <div class="panel__head"><div><h3>Actual cost vs budget by campaign</h3><div class="legend"><span><i style="background:var(--bar)"></i>Actual cost</span><span><i style="background:var(--plan)"></i>Budget</span></div></div>
+            <button class="more" type="button" aria-label="Chart options"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button></div>
+          <div data-chart-bullet></div>
+        </article>
+        <article class="panel w5">
+          <div class="panel__head"><div><h3>Budget vs actual by department</h3><div class="legend"><span><i style="background:var(--under)"></i>Under budget</span><span><i style="background:var(--over)"></i>Over budget</span></div></div>
+            <button class="more" type="button" aria-label="Chart options"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button></div>
+          <div data-chart-diverging></div>
+        </article>
+        <article class="panel w12">
+          <div class="panel__head"><h3>Campaign table</h3>
+            <button class="more" type="button" aria-label="Table options"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button></div>
+          <div data-table></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="s2">
+      <div class="section__head"><h2 id="s2">Agencies and past seasons</h2><p data-insight-agency></p></div>
+      <div class="grid">
+        <article class="panel w7">
+          <div class="panel__head"><div><h3>Actual cost by agency</h3><div class="legend"><span>Right column: running share of Grand Total</span></div></div>
+            <button class="more" type="button" aria-label="Chart options"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button></div>
+          <div data-chart-ranked></div>
+        </article>
+        <article class="panel w5 columns-pad">
+          <div class="panel__head"><div><h3>Budget vs actual by phase</h3><div class="legend"><span><i style="background:var(--plan)"></i>Budget</span><span><i style="background:var(--bar)"></i>Actual cost</span></div></div>
+            <button class="more" type="button" aria-label="Chart options"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button></div>
+          <div data-chart-columns></div>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="shared.js"></script>
+<script>
+"use strict";
+(function () {
+  const M = window.Mock, D = M.DATA, T = D.totals;
+  const $ = (s) => document.querySelector(s);
+  M.initTheme("light");
+
+  $("[data-file]").textContent = D.file;
+  $("[data-title]").textContent = D.title;
+  $("[data-subtitle]").textContent = D.subtitle;
+  $("[data-fy]").textContent = D.fiscalYear;
+
+  const headline = $("[data-headline]");
+  headline.append("Actual cost is ");
+  const strong = document.createElement("strong");
+  strong.textContent = `${M.pct(T.variance / T.budget)} over budget (${M.signed(T.variance)})`;
+  headline.append(strong, ` across ${D.campaigns.length} campaigns.`);
+
+  const kpis = [["Budget", T.budget, "Plan for FY 2026"], ["Actual cost", T.actual, M.pct(T.actual / T.budget) + " of budget"], ["Committed", T.committed, M.pct(T.committed / T.actual) + " of actual"], ["Invoiced", T.invoiced, M.pct(T.invoiced / T.actual) + " of actual"], ["Paid", T.paid, M.pct(T.paid / T.actual) + " of actual"]];
+  $("[data-kpis]").innerHTML = kpis.map(([l, v, s], i) => `<div tabindex="0" role="button" aria-pressed="${i === 1}" data-tip="${M.esc(l)}: ${M.full(v)}"><dt>${l}</dt><dd>${M.compact(v)}<small>${s}</small></dd></div>`).join("");
+  document.querySelectorAll("[data-kpis] > div").forEach((k) => k.addEventListener("click", () => {
+    document.querySelectorAll("[data-kpis] > div").forEach((o) => o.setAttribute("aria-pressed", String(o === k)));
+  }));
+
+  const overCount = D.campaigns.filter((c) => c.variance > 0).length;
+  const top = [...D.campaigns].sort((a, b) => b.variance - a.variance)[0];
+  $("[data-insight-campaign]").textContent = `${overCount} of ${D.campaigns.length} over budget; ${top.name} is the largest overspend (${M.signed(top.variance)}).`;
+  const top3 = D.agencies.slice(0, 3).reduce((s, a) => s + a.actual, 0);
+  $("[data-insight-agency]").textContent = `Top 3 agencies take ${M.pct(top3 / T.actual)} of actual cost.`;
+
+  function renderCampaignCharts() {
+    const q = $("#member-search").value.trim().toLowerCase();
+    const overOnly = $("[data-over-only]").checked;
+    const checked = new Set([...document.querySelectorAll("[data-checks] input:checked")].map((i) => i.value));
+    const rows = D.campaigns.filter((c) => checked.has(c.name) && (!overOnly || c.variance > 0));
+    $("[data-chart-bullet]").innerHTML = rows.length ? M.bulletRows(rows) : `<p class="readout">No campaigns match these filters. Clear the search or turn off “Only over budget”.</p>`;
+    const share = rows.reduce((s, r) => s + r.actual, 0) / T.actual;
+    $("[data-readout]").textContent = `Selected ${rows.length} of ${D.campaigns.length}: ${M.pct(share)} of Grand Total`;
+    document.querySelectorAll("[data-checks] label").forEach((l) => { l.hidden = q && !l.dataset.name.toLowerCase().includes(q); });
+  }
+
+  $("[data-checks]").innerHTML = D.campaigns.map((c) => `<label data-name="${M.esc(c.name)}"><input type="checkbox" value="${M.esc(c.name)}" checked> ${M.esc(c.name)}<span class="amt">${M.compact(c.actual)}</span></label>`).join("");
+  $("[data-checks]").addEventListener("change", renderCampaignCharts);
+  $("#member-search").addEventListener("input", renderCampaignCharts);
+  $("[data-over-only]").addEventListener("change", renderCampaignCharts);
+  document.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".seg button").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+  }));
+  const rail = $("[data-rail]"), ft = $("[data-filters-toggle]");
+  ft.addEventListener("click", () => { const open = rail.classList.toggle("is-open"); ft.setAttribute("aria-expanded", String(open)); });
+
+  renderCampaignCharts();
+  $("[data-chart-diverging]").innerHTML = M.divergingRows(D.departments);
+  $("[data-table]").innerHTML = M.campaignTable(D.campaigns, T);
+  $("[data-chart-ranked]").innerHTML = M.rankedRows(D.agencies, T.actual);
+  $("[data-chart-columns]").innerHTML = M.pairedColumns(D.phases);
+  M.wireInteractions(document.body);
+})();
+</script>
+</body>
+</html>
