@@ -17,7 +17,7 @@ The user uploads an Excel file. The tool **automatically** understands its struc
 - **Gold marks highlights** (active tab, primary buttons, progress, drag guides, selected member, picked gallery cards) and is **never text on a light surface**. Accent-colored text uses `--accent-text` (dark gold `#7A5A00` on light, `#E3C25A` on dark). Enforced by `tests/contrast.test.js`.
 - Dark mode uses warm black backgrounds with gold accents.
 - The **landing page always uses the TheSight design**, never the last design picked in a dashboard (`DV.designs.applyLanding`). A Light / Dark / System switch (top-right) picks the variant; System follows the OS live. The choice is remembered in `localStorage` (`thesight:landingMode`, try/catch, default System) and only affects the landing page. Its background is the "Sightlines" motion: faint drifting line-chart traces, one in gold, stopped under `prefers-reduced-motion`.
-- The default TheSight design follows the chosen "Option A" look (`docs/design-options/option-a.html`): restrained, warm neutrals, hairline panels, a ruled KPI ledger, gold only for action and selection.
+- The default TheSight design follows the chosen "Option A" look: restrained, warm neutrals, hairline panels, a ruled KPI ledger, gold only for action and selection.
 
 ---
 
